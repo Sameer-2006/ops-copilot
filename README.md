@@ -1,6 +1,8 @@
 # Ops Copilot for Disrupted Deliveries
 
 An AI-assisted delivery operations platform that helps dispatchers manage live riders, process photographed addresses, and handle rider disruptions through human-approved AI reassignment.
+<img width="1887" height="907" alt="image" src="https://github.com/user-attachments/assets/df68ba04-5539-447c-a094-384ac3e7efbb" />
+<img width="1881" height="906" alt="image" src="https://github.com/user-attachments/assets/5f4c1f70-521b-4d1f-b40a-37803872b272" />
 
 ## Problem
 
