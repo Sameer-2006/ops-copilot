@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-multipart
+transformers==4.57.1
+torch
+Pillow
+sentencepiece
+tiktoken

@@ -1,0 +1,69 @@
+services:
+
+  mongodb:
+    image: mongo:8
+    container_name: ops-mongodb
+    restart: unless-stopped
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
+  mongo-init:
+    image: mongo:8
+    container_name: ops-mongo-init
+    depends_on:
+      - mongodb
+    restart: "no"
+    command: >
+      mongosh --host mongodb:27017
+      --eval
+      "try { rs.status() } catch (e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb:27017'}]}) }"
+
+  ocr-service:
+    build:
+      context: ./ocr-service
+    container_name: ops-ocr
+    restart: unless-stopped
+    environment:
+      HF_HOME: /root/.cache/huggingface
+      HF_HUB_CACHE: /root/.cache/huggingface/hub
+    volumes:
+      - huggingface_cache:/root/.cache/huggingface
+    ports:
+      - "8000:8000"
+
+  backend:
+    build:
+      context: ./backend
+    container_name: ops-backend
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+      - mongo-init
+      - ocr-service
+    environment:
+      PORT: 5000
+      MONGO_URI: mongodb://mongodb:27017/ops-copilot?replicaSet=rs0
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      OCR_SERVICE_URL: http://ocr-service:8000
+      FRONTEND_URL: http://localhost
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ""
+    container_name: ops-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  mongo_data:
+  huggingface_cache:
