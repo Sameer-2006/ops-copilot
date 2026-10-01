@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const Rider = require("../models/Rider");
-const Order = require("../models/Order");
+const Order = require("../models/order");
 const AuditLog = require("../models/AuditLog");
 
 const {

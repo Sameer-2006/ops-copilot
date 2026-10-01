@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-const Order = require("../models/Order");
+const Order = require("../models/order");
 const Rider = require("../models/Rider");
 const { findBestRider } = require("../services/routing");
 
