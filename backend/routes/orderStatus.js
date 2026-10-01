@@ -1,7 +1,7 @@
 const express = require("express");
 
 const Order =
-    require("../models/Order");
+    require("../models/order");
 
 const AuditLog =
     require("../models/AuditLog");
